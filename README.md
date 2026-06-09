@@ -2,7 +2,7 @@
 
 Experimental Python demos for intercepting ANT EEG data over Lab Streaming Layer (LSL), estimating alpha/IAF-related control signals in real time, and transmitting stimulation commands to a custom stroboscopic light stimulation (SLS) device.
 
-> **Important status note**
+> **Important status note:**
 > These scripts are experimental demonstrations and remain a work in progress. They are not validated medical, clinical, therapeutic, neuromodulatory, or biofeedback tools. Several modes may entrain too locally, too simplistically, or too noisily to support meaningful neuromodulation or biofeedback claims. These demos also do **not** correctly bypass or solve unresolved issues with the strobe device’s thermal sensor / thermal safety behaviour.
 
 ## Project overview
