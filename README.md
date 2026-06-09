@@ -1,15 +1,17 @@
-# Closed-Loop ANT EEG → LSL → Strobe Demonstrations
+# Closed-Loop EEG → LSL → Strobe Demonstrations
 
-Experimental Python demos for intercepting ANT EEG data over Lab Streaming Layer (LSL), estimating alpha/IAF-related control signals in real time, and transmitting stimulation commands to a custom stroboscopic light stimulation (SLS) device.
+Experimental Python demos for intercepting EEG data over Lab Streaming Layer (LSL), estimating alpha/IAF-related control signals in real time, and transmitting spectral/temporal stimulation commands to a custom stroboscopic light stimulation (SLS) device.
+
+More broadly, this LSL-interception framework is intended as a flexible real-time bridge between endogenous brain activity and external stimulation systems. Although the present demos focus on EEG-derived alpha/IAF estimates driving a stroboscopic device, the same architecture could be adapted for many other closed-loop applications: sonifying neural dynamics, driving visual/auditory/tactile stimuli from ongoing brain rhythms, triggering or modulating TMS based on phase or power estimates, testing neurofeedback-style interfaces, or coordinating multimodal stimulation according to participant-specific oscillatory activity. In this sense, the value of the framework is not limited to the current strobe implementation; it demonstrates a general pipeline for acquiring live EEG over LSL, extracting interpretable features in real time, and mapping those features onto external devices. However, any such use would require application-specific validation of timing, safety, physiological specificity, and efficacy, particularly for neuromodulation or brain-state-contingent stimulation.
 
 > **Important status note:**
 > These scripts are experimental demonstrations and remain a work in progress. They are not validated medical, clinical, therapeutic, neuromodulatory, or biofeedback tools. Several modes may entrain too locally, too simplistically, or too noisily to support meaningful neuromodulation or biofeedback claims. These demos also do **not** correctly bypass or solve unresolved issues with the strobe device’s thermal sensor / thermal safety behaviour.
 
-## Project overview
+## Project Overview
 
 This repository contains early closed-loop EEG-to-strobe control experiments built around:
 
-* ANT EEG data streamed over LSL
+* EEG data streamed over LSL
 * offline WinPython-compatible Python scripts
 * Oz or ROI-based alpha / IAF estimation
 * serial communication with a custom strobe device
@@ -18,7 +20,7 @@ This repository contains early closed-loop EEG-to-strobe control experiments bui
 The general intended flow is:
 
 ```text
-ANT EEG amplifier
+EEG amplifier
         ↓
 LSL EEG stream
         ↓
@@ -31,7 +33,7 @@ Serial command to strobe
 Light stimulation output
 ```
 
-## Repository contents
+## Repository Contents
 
 | File               | Purpose                                                                                                                                                                                                              |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -45,7 +47,7 @@ Light stimulation output
 | `mobius.py`        | Record-and-replay demo: records oscillatory Oz activity, derives instantaneous frequency/envelope, writes a CSV trace, then replays the trace through the strobe.                                                    |
 | `zarathustra.py`   | Live Oz EEG-to-strobe IAF demo using a simpler command style intended for offline WinPython use.                                                                                                                     |
 
-## What these demos do
+## What These Demos Do
 
 The scripts explore several possible closed-loop stimulation strategies:
 
@@ -70,35 +72,35 @@ The scripts explore several possible closed-loop stimulation strategies:
 7. **Record-and-replay control**
    Record an EEG-derived oscillatory trace, derive frequency/brightness over time, save it to CSV, and replay it through the strobe.
 
-## Important limitations
+## Important Limitations
 
 These demos should be treated as exploratory engineering prototypes only.
 
-### Not validated for neuromodulation or biofeedback
+### Not Validated for Neuromodulation or Biofeedback
 
 The code has not been validated as a neuromodulatory, therapeutic, or biofeedback system. Although several scripts use live EEG features to drive stimulation, this does not establish that the system produces reliable, beneficial, or spatially meaningful brain-state modulation.
 
-### Local entrainment concern
+### Local Entrainment Concern
 
 Several approaches rely heavily on Oz or small ROI signals. This may lead to very local or sensor-specific entrainment behaviour. Apparent tracking of alpha/IAF at one electrode should not be interpreted as evidence of whole-brain modulation, network-level engagement, or clinically meaningful feedback.
 
-### Thermal sensor issue not solved
+### Thermal Sensor Issue Not Solved
 
 These scripts do **not** correctly bypass, fix, or resolve any outstanding strobe thermal sensor / thermal protection issues. Do not use these scripts as a workaround for unsafe or unresolved hardware behaviour. Hardware-level safety constraints should remain active and should be verified independently.
 
-### Experimental command compatibility
+### Experimental Command Compatibility
 
 Different scripts assume different serial command styles, baud rates, and firmware behaviours. Some use command `6`, others use command `1` or `3`, and some contain fallback paths. These may need to be edited to match the currently flashed strobe firmware.
 
-### Channel indices must be checked
+### Channel Indices Must Be Checked
 
-Most scripts assume specific LSL channel indices, such as Oz at index `63` and, in some demos, a photodiode channel at a fixed index. These are 0-based indices and must be checked against the active ANT/LSL channel order before running.
+Most scripts assume specific LSL channel indices, such as Oz at index `63` and, in some demos, a photodiode channel at a fixed index. These are 0-based indices and must be checked against the active LSL channel order before running.
 
-### Timing is best-effort
+### Timing is Best-Effort
 
 The scripts use Python timing, serial writes, LSL buffering, and Windows scheduling. Timing is therefore best-effort rather than hard real-time. For experimental work requiring verified stimulation timing, use photodiode validation and logged trigger alignment.
 
-## Safety warning
+## Safety Warning
 
 Stroboscopic stimulation can be uncomfortable and may pose risks for people with photosensitive epilepsy, migraine sensitivity, neurological conditions, or other contraindications. These scripts should only be used in an appropriate supervised research or engineering context with suitable screening, safety procedures, emergency stop procedures, and independent hardware validation.
 
@@ -120,16 +122,16 @@ pyserial
 Hardware/software dependencies:
 
 ```text
-ANT EEG system streaming over LSL
+EEG system streaming over LSL
 Custom strobe device connected over USB serial
 Correct strobe firmware flashed to the device
 Photodiode channel, where required by phase-control demos
 Windows COM port access
 ```
 
-## Basic setup
+## Basic Setup
 
-1. Start the ANT EEG system.
+1. Start the EEG system.
 2. Confirm that EEG data are being streamed over LSL with stream type `EEG`.
 3. Connect the strobe device over USB.
 4. Confirm the correct COM port, usually edited near the top of each script:
@@ -291,7 +293,7 @@ Before using any mode in a formal experiment, validate at minimum:
 
 ## Recommended wording for reuse
 
-This repository contains exploratory closed-loop EEG-to-strobe demonstrations developed for offline WinPython use with ANT EEG LSL streams and a custom stroboscopic stimulation device. The code demonstrates several candidate approaches for estimating alpha/IAF-related control signals and transmitting them to the strobe over serial. These scripts are not validated neuromodulation or biofeedback tools, may entrain too locally or unreliably for such purposes, and do not resolve outstanding thermal sensor issues in the strobe hardware.
+This repository contains exploratory closed-loop EEG-to-strobe demonstrations developed for offline WinPython use with EEG LSL streams and a custom stroboscopic stimulation device. The code demonstrates several candidate approaches for estimating alpha/IAF-related control signals and transmitting them to the strobe over serial. These scripts are not validated neuromodulation or biofeedback tools, may entrain too locally or unreliably for such purposes, and do not resolve outstanding thermal sensor issues in the strobe hardware.
 
 ## Disclaimer
 
